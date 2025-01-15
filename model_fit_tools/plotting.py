@@ -602,6 +602,7 @@ def plot_matrices(
     confusion_matrix: np.array,
     inversion_matrix: np.array,
     model_names: list,
+    format_names: bool = False,
     scale: float = 1.0,
     cmap: str = "viridis",
 ) -> None:
@@ -615,7 +616,11 @@ def plot_matrices(
             indicating the proportion of times each model is selected as best
             given each true model.
         model_names (list): List of strings indicating the name of each model,
-            used for axis labels. scale (float): Scaling factor for the
+            used for axis labels.
+        format_names: (bool): Whether to format the model names. If True,
+            replaces underscores with spaces and capitalizes the first letter.
+            and replaces 'Mf' with 'MF' and 'Mb' with 'MB'. Defaults to False.
+        scale (float): Scaling factor for the
             matrices.
         cmap (str): The colormap to use for the heatmaps.
 
@@ -629,15 +634,12 @@ def plot_matrices(
 
     fig, axs = plt.subplots(1, 2, figsize=(14 * scale, 6 * scale))
 
-    # Replace underscores with spaces
-    model_names = [name.replace("_", " ") for name in model_names]
+    if format_names:
+        # Replace underscores with spaces
+        model_names = [name.replace("_", " ") for name in model_names]
 
-    # Capitalize first letter
-    model_names = [name.capitalize() for name in model_names]
-
-    # Replace 'Mf' with 'MF' and 'Mb' with 'MB'
-    model_names = [name.replace("Mf", "MF") for name in model_names]
-    model_names = [name.replace("Mb", "MB") for name in model_names]
+        # Capitalize first letter
+        model_names = [name.capitalize() for name in model_names]
 
     # Plotting the confusion matrix
     sns.heatmap(
